@@ -22,13 +22,11 @@ const Home = () => {
           Authorization : process.env.NEXT_PUBLIC_SPOONACULAR_API_KEY,
         },
       });
-      console.log(response)
       dispatch(setRecipes(response.data.results));
     } catch (err: any) {
       dispatch(setError(err.message));
     }
   };
-  console.log(process.env.NEXT_PUBLIC_SPOONACULAR_API_KEY)
 
   return (
     <div className="p-8">
