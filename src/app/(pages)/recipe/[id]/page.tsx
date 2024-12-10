@@ -56,6 +56,7 @@ const RecipeDetails = () => {
     return <p>Recipe not found</p>;
   }
 
+  console.log(recipe)
   return (
     <div className="p-8">
       <h1 className="text-4xl font-bold">{recipe.title}</h1>

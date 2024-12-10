@@ -2,6 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface RecipeState {
   searchQuery: string;
+  selectedCuisine: string,
+  selectedDiet: string,
+  selectedMinValue: number,
+  selectedMaxValue: number,
   recipes: any[];
   loading: boolean;
   error: string | null;
@@ -9,6 +13,10 @@ interface RecipeState {
 
 const initialState: RecipeState = {
   searchQuery: '',
+  selectedCuisine: 'none',
+  selectedDiet: 'none',
+  selectedMinValue: 0,
+  selectedMaxValue: 0,
   recipes: [],
   loading: false,
   error: null,
@@ -20,6 +28,18 @@ const recipeSlice = createSlice({
   reducers: {
     setSearchQuery(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload;
+    },
+    setSelectedCuisine(state, action: PayloadAction<string>) {
+      state.selectedCuisine = action.payload;
+    },
+    setSelectedDiet(state, action: PayloadAction<string>) {
+      state.selectedDiet = action.payload;
+    },
+    setSelectedMinValue(state, action: PayloadAction<number>) {
+      state.selectedMinValue = action.payload;
+    },
+    setSelectedMaxValue(state, action: PayloadAction<number>) {
+      state.selectedMaxValue = action.payload;
     },
     setRecipes(state, action: PayloadAction<any[]>) {
       state.recipes = action.payload;
@@ -34,6 +54,6 @@ const recipeSlice = createSlice({
   },
 });
 
-export const { setSearchQuery, setRecipes, setLoading, setError } = recipeSlice.actions;
+export const { setSearchQuery, setSelectedCuisine, setSelectedDiet, setSelectedMinValue, setSelectedMaxValue, setRecipes, setLoading, setError } = recipeSlice.actions;
 
 export default recipeSlice.reducer;
