@@ -14,15 +14,13 @@ interface Meal {
 }
 
 interface PlannerState {
-  mealPlan: {
-    [date: string]: Meal[];
-  };
   selectedDate: string;
+  mealPlan: { [date: string]: Meal[] };
 }
 
 const initialState: PlannerState = {
+  selectedDate: new Date().toISOString().split('T')[0], // Default to today
   mealPlan: {},
-  selectedDate: new Date().toISOString().split('T')[0],
 };
 
 const plannerSlice = createSlice({
@@ -32,38 +30,25 @@ const plannerSlice = createSlice({
     setSelectedDate(state, action: PayloadAction<string>) {
       state.selectedDate = action.payload;
     },
-    addMealToPlan(
-      state,
-      action: PayloadAction<{ date: string; meal: Meal }>
-    ) {
+    addMealToPlan(state, action: PayloadAction<{ date: string; meal: Meal }>) {
       const { date, meal } = action.payload;
       if (!state.mealPlan[date]) {
         state.mealPlan[date] = [];
       }
       state.mealPlan[date].push(meal);
     },
-    removeMealFromPlan(
-      state,
-      action: PayloadAction<{ date: string; mealId: number }>
-    ) {
+    removeMealFromPlan(state, action: PayloadAction<{ date: string; mealId: number }>) {
       const { date, mealId } = action.payload;
-      if (state.mealPlan[date]) {
-        state.mealPlan[date] = state.mealPlan[date].filter(
-          (meal) => meal.id !== mealId
-        );
-      }
+      state.mealPlan[date] = state.mealPlan[date]?.filter((meal) => meal.id !== mealId) || [];
     },
     clearMealsForDate(state, action: PayloadAction<string>) {
-      delete state.mealPlan[action.payload];
+      const date = action.payload;
+      delete state.mealPlan[date];
     },
   },
 });
 
-export const {
-  setSelectedDate,
-  addMealToPlan,
-  removeMealFromPlan,
-  clearMealsForDate,
-} = plannerSlice.actions;
+export const { setSelectedDate, addMealToPlan, removeMealFromPlan, clearMealsForDate } =
+  plannerSlice.actions;
 
 export default plannerSlice.reducer;
