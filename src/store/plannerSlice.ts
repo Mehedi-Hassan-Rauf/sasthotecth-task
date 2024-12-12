@@ -33,10 +33,11 @@ const plannerSlice = createSlice({
     },
     addMealToPlan(state, action: PayloadAction<Meal>) {
       const newMeal = action.payload;
-      if (!newMeal.date) {
-        newMeal.date = state.selectedDate;
-      }
-      state.mealPlan.push(newMeal);
+      // if (!newMeal.date) {
+      //   newMeal.date = state.selectedDate;
+      // }
+      // state.mealPlan.push(newMeal);
+      state.mealPlan = [newMeal, ...state.mealPlan];
     },
     removeMealFromPlan(state, action: PayloadAction<{ mealId: number }>) {
       const { mealId } = action.payload;
