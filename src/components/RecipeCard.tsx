@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addMealToPlan } from '../store/plannerSlice';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { RootState } from '@/store';
 
 interface RecipeCardProps {
   id: number;
@@ -32,13 +33,15 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ id, title, image }) => {
         fat: Math.floor(Math.random() * 20) + 5,
       },
     };
-    console.log(dummyMeal)
 
     const formattedDate = selectedDate.toISOString().split('T')[0];
     dispatch(addMealToPlan({ date: formattedDate, meal: dummyMeal }));
     alert(`${title} has been added to the meal plan for ${formattedDate}.`);
     setSelectedDate(null);
   };
+  
+  const { mealPlan } = useSelector((state: RootState) => state.planner);
+  console.log(mealPlan)
 
   return (
     <div className="border rounded p-4">

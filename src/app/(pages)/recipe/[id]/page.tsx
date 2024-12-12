@@ -3,6 +3,8 @@
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store';
 
 interface Recipe {
   id: number;
@@ -13,12 +15,14 @@ interface Recipe {
 }
 
 const RecipeDetails = () => {
-  const [recipe, setRecipe] = useState<Recipe | null>(null); // Use Recipe type
+  const [recipe, setRecipe] = useState<Recipe | null>(null); 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { mealPlan } = useSelector((state: RootState) => state.planner);
+  console.log(mealPlan)
 
   const params = useParams();
-  const recipeId = params?.id; // Ensure you define `id` in your route structure
+  const recipeId = params?.id;
 
   useEffect(() => {
     if (!recipeId) {

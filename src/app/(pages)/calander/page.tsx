@@ -1,27 +1,21 @@
 "use client";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store';
-import {
-  setSelectedDate,
-  addMealToPlan,
-  removeMealFromPlan,
-  clearMealsForDate,
-} from '../../../store/plannerSlice';
+import { setSelectedDate, addMealToPlan, removeMealFromPlan, clearMealsForDate } from '../../../store/plannerSlice';
 import { useState } from 'react';
 
 const MealPlanner = () => {
   const dispatch = useDispatch();
   const { mealPlan, selectedDate } = useSelector((state: RootState) => state.planner);
 
+  console.log(mealPlan)
   const [viewMode, setViewMode] = useState<'weekly' | 'monthly'>('weekly');
 
-  console.log(mealPlan)
-  // Generate date range for current view
   const getDateRange = () => {
     const current = new Date(selectedDate);
     const range = [];
     if (viewMode === 'weekly') {
-      current.setDate(current.getDate() - current.getDay()); // Start of the week
+      current.setDate(current.getDate() - current.getDay());
       for (let i = 0; i < 7; i++) {
         range.push(new Date(current));
         current.setDate(current.getDate() + 1);
@@ -38,6 +32,11 @@ const MealPlanner = () => {
   };
 
   const dateRange = getDateRange();
+
+  const mealsForSelectedRange = (date: Date) => {
+    const dateString = date.toISOString().split('T')[0];
+    return mealPlan.filter((meal) => meal.date === dateString);
+  };
 
   const calculateTotals = (meals: any[]) => {
     return meals.reduce(
@@ -93,10 +92,9 @@ const MealPlanner = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {dateRange.map((date) => {
           const dateString = date.toISOString().split('T')[0];
-          const meals = mealPlan[dateString] || [];
+          const meals = mealsForSelectedRange(date);
           const totals = calculateTotals(meals);
 
-          console.log(meals)
           return (
             <div key={dateString} className="border rounded p-4">
               <h2 className="text-lg font-bold">
@@ -107,7 +105,7 @@ const MealPlanner = () => {
                   <h3>{meal.title}</h3>
                   <p>{meal.nutrition.calories} Calories</p>
                   <button
-                    onClick={() => dispatch(removeMealFromPlan({ date: dateString, mealId: meal.id }))}
+                    onClick={() => dispatch(removeMealFromPlan({ mealId: meal.id }))}
                     className="text-red-500 hover:underline"
                   >
                     Remove
