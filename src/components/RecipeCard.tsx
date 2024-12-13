@@ -35,7 +35,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ id, title, image }) => {
     console.log(dummyMeal)
 
     const formattedDate = selectedDate.toISOString().split('T')[0];
-    dispatch(addMealToPlan({ date: formattedDate, mealPlan: dummyMeal }));
+    dispatch(addMealToPlan({ date: formattedDate, meal: dummyMeal }));
     alert(`${title} has been added to the meal plan for ${formattedDate}.`);
     setSelectedDate(null);
   };
